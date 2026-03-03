@@ -1,0 +1,9 @@
+---
+-   name: Reload kernel modules
+    ansible.builtin.command: "{{ item }}"
+    loop:
+        - modprobe overlay
+        - modprobe br_netfilter
+
+-   name: Apply sysctl
+    ansible.builtin.command: sysctl --system

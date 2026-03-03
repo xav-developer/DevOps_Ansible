@@ -1,0 +1,7 @@
+---
+-   name: Nginx
+    hosts: orb
+    become: true
+
+    roles:
+        -   role: nginx

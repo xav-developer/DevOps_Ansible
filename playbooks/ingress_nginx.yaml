@@ -1,0 +1,7 @@
+---
+-   name: Ingress Nginx
+    hosts: kube_control_plane[0]
+    become: true
+
+    roles:
+        -   role: ingress_nginx

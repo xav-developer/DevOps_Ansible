@@ -1,0 +1,21 @@
+all:
+    vars:
+        ansible_python_interpreter: /usr/bin/python3
+
+    children:
+        orb:
+            hosts:
+                manager-01:
+                    ansible_user: manager-01
+                    ansible_host: orb
+                worker-01:
+                    ansible_user: worker-01
+                    ansible_host: orb
+
+        kube_control_plane:
+            hosts:
+                manager-01:
+
+        kube_workers:
+            hosts:
+                worker-01:

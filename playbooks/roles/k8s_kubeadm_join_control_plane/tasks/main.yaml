@@ -1,0 +1,11 @@
+---
+-   name: Check if control-plane already joined (admin.conf exists)
+    ansible.builtin.stat:
+        path: /etc/kubernetes/admin.conf
+    register: k8s_admin_conf
+
+-   name: Join node as additional control-plane
+    ansible.builtin.command: "{{ hostvars[groups['kube_control_plane'][0]].k8s_join_command_control_plane }}"
+    when:
+        - not k8s_admin_conf.stat.exists
+        - hostvars[groups['kube_control_plane'][0]].k8s_join_command_control_plane is defined

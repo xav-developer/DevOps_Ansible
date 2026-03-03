@@ -1,0 +1,24 @@
+---
+-   name: Ensure apt keyrings directory exists
+    ansible.builtin.file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: "0755"
+
+-   name: Add Kubernetes GPG key
+    ansible.builtin.shell: |
+        curl -fsSL {{ k8s_apt_key_url }} | gpg --dearmor -o {{ k8s_apt_keyring_path }}
+    args:
+        creates: "{{ k8s_apt_keyring_path }}"
+
+-   name: Add Kubernetes repository
+    ansible.builtin.copy:
+        dest: "{{ k8s_apt_list_path }}"
+        content: |
+            deb [signed-by={{ k8s_apt_keyring_path }}] {{ k8s_apt_repo_url }} /
+    register: k8s_repo_file
+
+-   name: Update apt after adding k8s repo
+    ansible.builtin.apt:
+        update_cache: true
+    when: k8s_repo_file is changed

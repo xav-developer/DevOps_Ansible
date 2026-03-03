@@ -1,0 +1,6 @@
+---
+-   name: Fetch /etc/kubernetes/admin.conf
+    ansible.builtin.fetch:
+        src: /etc/kubernetes/admin.conf
+        dest: "{{ playbook_dir }}/../kubeconfig/admin.conf"
+        flat: true

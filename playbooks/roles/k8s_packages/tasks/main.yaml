@@ -1,0 +1,8 @@
+---
+-   name: Install Kubernetes packages
+    ansible.builtin.apt:
+        name:
+            - kubelet
+            - kubeadm
+            - kubectl
+        state: present

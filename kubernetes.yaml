@@ -1,0 +1,14 @@
+all:
+    vars:
+        ansible_python_interpreter: /usr/bin/python3
+
+    children:
+        orb:
+            hosts:
+                kubernetes:
+                    ansible_user: develop
+                    ansible_host: kubernetes@orb
+
+        kube_control_plane:
+            hosts:
+                kubernetes:

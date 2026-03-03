@@ -1,0 +1,39 @@
+---
+-   name: Install kubernetes-cni
+    ansible.builtin.apt:
+        name: kubernetes-cni
+        state: present
+
+-   name: Create /usr/lib/cni directory
+    ansible.builtin.file:
+        path: /usr/lib/cni
+        state: directory
+        mode: "0755"
+
+-   name: Find CNI binaries
+    ansible.builtin.find:
+        paths: /opt/cni/bin
+        file_type: any
+    register: cni_binaries
+
+-   name: Create symlinks for CNI binaries
+    ansible.builtin.file:
+        src: "{{ item.path }}"
+        dest: "/usr/lib/cni/{{ item.path | basename }}"
+        state: link
+    loop: "{{ cni_binaries.files }}"
+
+-   name: Add Cilium Helm repository
+    ansible.builtin.command:
+        cmd: helm repo add cilium https://helm.cilium.io/
+    changed_when: true
+
+-   name: Update Helm repositories
+    ansible.builtin.command:
+        cmd: helm repo update
+    changed_when: true
+
+-   name: Install Cilium
+    ansible.builtin.command:
+        cmd: helm install cilium cilium/cilium --namespace kube-system
+    changed_when: true

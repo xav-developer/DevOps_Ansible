@@ -1,0 +1,5 @@
+---
+k8s_apiserver_cert_extra_sans: "kubernetes.orb.local"
+k8s_kubeadm_dry_run: false
+k8s_kubeadm_refresh_join_commands: false
+kubeconfig_user: develop

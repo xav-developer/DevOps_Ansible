@@ -1,0 +1,25 @@
+---
+-   name: Kubernetes
+    hosts: orb
+    become: true
+
+    roles:
+        -   role: k8s_prereqs
+        -   role: k8s_swap
+        -   role: k8s_kernel
+        -   role: containerd
+        -   role: k8s_repo
+        -   role: k8s_packages
+
+        -   role: k8s_kubeadm_init
+            when:
+                - "'kube_control_plane' in group_names"
+                - inventory_hostname == (groups['kube_control_plane'] | first)
+
+        -   role: k8s_kubeadm_join_control_plane
+            when:
+                - "'kube_control_plane' in group_names"
+                - inventory_hostname != (groups['kube_control_plane'] | first)
+
+        -   role: k8s_kubeadm_join_worker
+            when: "'kube_workers' in group_names"

@@ -1,0 +1,34 @@
+---
+-   name: Create .kube directory for user
+    ansible.builtin.file:
+        path: "/home/{{ kubeconfig_user | default(ansible_user) }}/.kube"
+        state: directory
+        owner: "{{ kubeconfig_user | default(ansible_user) }}"
+        group: "{{ kubeconfig_user | default(ansible_user) }}"
+        mode: "0700"
+
+-   name: Copy admin.conf to user kubeconfig
+    ansible.builtin.copy:
+        src: "/etc/kubernetes/admin.conf"
+        dest: "/home/{{ kubeconfig_user | default(ansible_user) }}/.kube/config"
+        remote_src: true
+        owner: "{{ kubeconfig_user | default(ansible_user) }}"
+        group: "{{ kubeconfig_user | default(ansible_user) }}"
+        mode: "0600"
+
+-   name: Create .kube directory for root
+    ansible.builtin.file:
+        path: "/root/.kube"
+        state: directory
+        owner: root
+        group: root
+        mode: "0700"
+
+-   name: Copy admin.conf to root kubeconfig
+    ansible.builtin.copy:
+        src: "/etc/kubernetes/admin.conf"
+        dest: "/root/.kube/config"
+        remote_src: true
+        owner: root
+        group: root
+        mode: "0600"
