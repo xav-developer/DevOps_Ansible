@@ -1,0 +1,6 @@
+---
+-   name: Untaint Control Plane nodes
+    hosts: kube_control_plane
+    become: true
+    roles:
+        -   role: k8s_untaint_control_plane

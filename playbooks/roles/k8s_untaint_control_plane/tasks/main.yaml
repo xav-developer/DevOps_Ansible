@@ -1,0 +1,10 @@
+---
+-   name: Remove control-plane taint if no workers
+    ansible.builtin.command: "kubectl taint nodes --all node-role.kubernetes.io/control-plane-"
+    register: taint_remove_result
+    changed_when: "'untainted' in taint_remove_result.stdout"
+    failed_when:
+        - taint_remove_result.rc != 0
+        - "'not found' not in taint_remove_result.stderr"
+    when:
+        - (groups['kube_workers'] | default([]) | length) == 0

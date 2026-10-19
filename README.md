@@ -42,6 +42,12 @@ ansible-playbook --inventory kubernetes.yaml playbooks/kubeconfig.yaml
 ansible-playbook --inventory kubernetes.yaml playbooks/kubeconfig_setup.yaml
 ```
 
+# Ansible Playbook untaint control plane
+
+```shell
+ansible-playbook --inventory kubernetes.yaml playbooks/k8s_untaint_control_plane.yaml
+```
+
 # Ansible Playbook helm
 
 ```shell
